@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int findComplement(int num) {
+        int i = 0, res = 0;
+        
+        while(num > 0) {
+            // Get the least significant bit
+            int rem = num % 2;
+            
+            // Flip the bit (1 becomes 0, and 0 becomes 1)
+            if(rem == 1) {
+                rem = 0;
+            } else {
+                rem = 1;
+            }
+            
+            // Add the flipped bit value to the result
+            res += rem * pow(2, i);
+            
+            // Move to the next bit
+            num = num / 2;
+            i++;
+        }
+        
+        return res;
+    }
+};
