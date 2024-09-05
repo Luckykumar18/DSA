@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<int> missingRolls(vector<int>& rolls, int mean, int n) {
+        int sum = 0;
+        vector<int> ans;
+        
+        // Calculate the sum of the existing rolls
+        for (int i = 0; i < rolls.size(); i++) {
+            sum += rolls[i];
+        }
+        
+        // Calculate the required total sum and the remaining sum needed for missing rolls
+        int totalSum = (rolls.size() + n) * mean;
+        int remainingSum = totalSum - sum;
+        
+        // Feasibility check: each missing roll must be between 1 and 6
+        if (remainingSum < n || remainingSum > 6 * n) {
+            return ans;
+        }
+        
+        // Distribute the remaining sum among the missing rolls
+        for (int i = 0; i < n; i++) {
+            int roll = min(6, remainingSum - (n - 1 - i));  // Ensure each roll doesn't exceed 6
+            ans.push_back(roll);
+            remainingSum -= roll;
+        }
+        
+        return ans;
+    }
+};
