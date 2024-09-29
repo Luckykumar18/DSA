@@ -1,0 +1,36 @@
+class Solution{
+    public:
+    vector<int> postOrder(Node* root) {
+        vector<int> post;
+        if (root == nullptr) {
+            return post;
+        }
+        
+        stack<pair<Node*, int>> st;
+        st.push({root, 1});
+        
+        while (!st.empty()) {
+            auto it = st.top();
+            st.pop();
+            
+            if (it.second == 1) {  // Preorder logic
+                it.second++;
+                st.push(it);
+                if (it.first->left != nullptr) {
+                    st.push({it.first->left, 1});
+                }
+            } 
+            else if (it.second == 2) {  // Inorder logic
+                it.second++;
+                st.push(it);
+                if (it.first->right != nullptr) {
+                    st.push({it.first->right, 1});
+                }
+            } 
+            else {  // Postorder logic
+                post.push_back(it.first->data);
+            }
+        }
+        return post;
+    }
+};
