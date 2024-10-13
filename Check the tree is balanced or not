@@ -1,0 +1,26 @@
+class  Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        // If the height function returns -1, the tree is not balanced.
+        return height(root) != -1;
+    }
+
+private:
+    int height(TreeNode* root) {
+        if (root == nullptr) {
+            return 0;  // Height of an empty tree is 0.
+        }
+
+        int lh = height(root->left);
+        if (lh == -1) return -1;  // If left subtree is unbalanced, propagate -1.
+
+        int rh = height(root->right);
+        if (rh == -1) return -1;  // If right subtree is unbalanced, propagate -1.
+
+        if (abs(lh - rh) > 1) {
+            return -1;  // If the current node is unbalanced, return -1.
+        }
+
+        return 1 + max(lh, rh);  // Height of the current node.
+    }
+};
