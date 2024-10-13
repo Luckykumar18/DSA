@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        int maxii = 0;  // Variable to store the maximum diameter.
+        height(root, maxii);  // Call helper function to compute height and update maxii.
+        return maxii;
+    }
+
+private:
+    // Helper function to compute the height and update the diameter.
+    int height(TreeNode* node, int& maxii) {
+        if (node == nullptr) {
+            return 0;
+        }
+        
+        int lh = height(node->left, maxii);  // Left subtree height.
+        int rh = height(node->right, maxii);  // Right subtree height.
+
+        // Update maxii with the diameter at the current node.
+        maxii = max(maxii, lh + rh);
+
+        // Return the height of the current node.
+        return 1 + max(lh, rh);
+    }
+};
