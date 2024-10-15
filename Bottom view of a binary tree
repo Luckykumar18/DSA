@@ -1,0 +1,39 @@
+vector<int> bottomView(Node* root) {
+    vector<int> ans;  // To store the final result
+    if (root == nullptr) {
+        return ans;  // If the tree is empty, return an empty vector
+    }
+
+    queue<pair<Node*, int>> q;  // Stores {node, horizontal distance}
+    map<int, int> mpp;  // Stores {horizontal distance -> node data}
+
+    q.push({root, 0});  // Start with the root node at horizontal distance 0
+
+    while (!q.empty()) {
+        auto it = q.front();  // Get the front element of the queue
+        q.pop();  // Remove the element from the queue
+
+        Node* node = it.first;  // Extract the node
+        int line = it.second;   // Extract its horizontal distance
+
+        // Update the map with the latest (deepest) node for this horizontal distance
+        mpp[line] = node->data;
+
+        // Push the left child with horizontal distance (line - 1)
+        if (node->left != nullptr) {
+            q.push({node->left, line - 1});
+        }
+
+        // Push the right child with horizontal distance (line + 1)
+        if (node->right != nullptr) {
+            q.push({node->right, line + 1});
+        }
+    }
+
+    // Collect the bottom view from the map, in ascending order of horizontal distances
+    for (auto it : mpp) {
+        ans.push_back(it.second);
+    }
+
+    return ans;  // Return the result
+}
