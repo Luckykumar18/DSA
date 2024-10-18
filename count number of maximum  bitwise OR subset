@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int countMaxOrSubsets(vector<int>& nums) {
+        // Calculate the target OR value
+        int targetOr = 0;
+        for (int num : nums) {
+            targetOr |= num;
+        }
+        
+        // Create a 2D DP table with dimensions [n][targetOr + 1]
+        vector<vector<int>> dp(nums.size(), vector<int>(targetOr + 1, -1));
+        
+        // Start recursion from index 0 and initial OR value 0
+        return recur(0, nums, 0, targetOr, dp);
+    }
+
+private:
+    // Recursion with memoization
+    int recur(int index, vector<int>& nums, int curOr, int targetOr, vector<vector<int>>& dp) {
+        // Base case: if we reach the end of the array
+        if (index == nums.size()) {
+            return (curOr == targetOr) ? 1 : 0;
+        }
+
+        // Check if the result is already cached
+        if (dp[index][curOr] != -1) {
+            return dp[index][curOr];
+        }
+
+        // Option 1: Include the current element in the OR operation
+        int pickCount = recur(index + 1, nums, curOr | nums[index], targetOr, dp);
+
+        // Option 2: Skip the current element
+        int noPickCount = recur(index + 1, nums, curOr, targetOr, dp);
+
+        // Store the result in the DP table and return it
+        return dp[index][curOr] = pickCount + noPickCount;
+    }
+};
